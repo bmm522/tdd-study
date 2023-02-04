@@ -6,11 +6,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+
+// 1. 테스트 메서드들의 순서는 보장되지 않는다.
+// 2. 테스트 메서드가 하나 실행 후 종료되면 데이터가 초기화 된다. (단 primary key auto_increment 값이 초기화가 안됨)
 
 @DataJpaTest // DB 와 관련된 컴포넌트만 메모리에 로딩
 public class BookRepositoryTest {
@@ -87,6 +93,7 @@ public class BookRepositoryTest {
     } // 트랙잭션 종료 (저장된 데이터를 초기화함)
 
     // 3. 책 학건 보기
+    @Sql("classpath:db/tableInit.sql")
     @Test
     @DisplayName("책 한건 보기 테스트")
     public void SelectOneBookTest(){
@@ -104,5 +111,19 @@ public class BookRepositoryTest {
         assertEquals(title, bookPS.getTitle());
         assertEquals(author, bookPS.getAuthor());
 
+    }
+
+    // 4. 책 삭제
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    @DisplayName("책 삭제")
+    public void deleteBook(){
+        Long id = 1L;
+
+        bookRepository.deleteById(id);
+
+        Optional<Book> bookPS = bookRepository.findById(id);
+
+        assertFalse(bookPS.isPresent());
     }
 }
