@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -79,5 +80,24 @@ public class BookServiceTest {
         assertThat(dtos.get(0).getAuthor()).isEqualTo("김지인");
         assertThat(dtos.get(1).getTitle()).isEqualTo("spring강의");
         assertThat(dtos.get(1).getAuthor()).isEqualTo("김지인");
+    }
+
+    // 3. 책 한건보기 테스트
+    @Test
+    @DisplayName("책 한건보기 테스트")
+    public void selectBookTest(){
+        // given
+        Long id = 1L;
+        Book book = new Book(1L, "junit강의", "김지인");
+        Optional<Book> bookOp = Optional.of(book);
+        // stub
+        when(bookRepository.findById(id)).thenReturn(bookOp);
+        // when
+        BookResDto bookResDto = bookService.selectBook(id);
+
+        // then
+        assertThat(bookResDto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(bookResDto.getAuthor()).isEqualTo(book.getAuthor());
+        
     }
 }
