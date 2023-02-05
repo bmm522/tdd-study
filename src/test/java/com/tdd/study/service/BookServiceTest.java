@@ -52,8 +52,7 @@ public class BookServiceTest {
         BookResDto bookResDto = bookService.insertBook(dto);
 
         // then
-       // assertEquals("junit강의", bookResDto.getTitle());
-       // assertEquals(dto.getAuthor(), bookResDto.getAuthor());
+
         assertThat(dto.getTitle()).isEqualTo(bookResDto.getTitle());
         assertThat(dto.getAuthor()).isEqualTo(bookResDto.getAuthor());
     }

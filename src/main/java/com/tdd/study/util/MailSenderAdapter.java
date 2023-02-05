@@ -1,5 +1,8 @@
 package com.tdd.study.util;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MailSenderAdapter implements MailSender{
 
     private Mail mail;
