@@ -1,5 +1,6 @@
 package com.tdd.study.service;
 
+import com.tdd.study.domain.Book;
 import com.tdd.study.domain.BookRepository;
 import com.tdd.study.util.MailSender;
 import com.tdd.study.util.MailSenderStub;
@@ -11,6 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -51,5 +56,28 @@ public class BookServiceTest {
        // assertEquals(dto.getAuthor(), bookResDto.getAuthor());
         assertThat(dto.getTitle()).isEqualTo(bookResDto.getTitle());
         assertThat(dto.getAuthor()).isEqualTo(bookResDto.getAuthor());
+    }
+
+    @Test
+    @DisplayName("책 목록보기 테스트")
+    public void selectBooksTest(){
+        // given
+
+        // stub (가설)
+        List<Book> books = new ArrayList<>();
+        books.add(new Book(1L, "junit강의", "김지인"));
+        books.add(new Book(2L, "spring강의", "김지인"));
+
+        when(bookRepository.findAll()).thenReturn(books);
+
+        // when (실행)
+        List<BookResDto> dtos = bookService.selectBooks();
+
+
+        // then
+        assertThat(dtos.get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(dtos.get(0).getAuthor()).isEqualTo("김지인");
+        assertThat(dtos.get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(dtos.get(1).getAuthor()).isEqualTo("김지인");
     }
 }
