@@ -88,9 +88,10 @@ public class BookServiceTest {
     public void selectBookTest(){
         // given
         Long id = 1L;
+
+        // stub
         Book book = new Book(1L, "junit강의", "김지인");
         Optional<Book> bookOp = Optional.of(book);
-        // stub
         when(bookRepository.findById(id)).thenReturn(bookOp);
         // when
         BookResDto bookResDto = bookService.selectBook(id);
@@ -98,6 +99,28 @@ public class BookServiceTest {
         // then
         assertThat(bookResDto.getTitle()).isEqualTo(book.getTitle());
         assertThat(bookResDto.getAuthor()).isEqualTo(book.getAuthor());
-        
+
+    }
+
+    // 3. 책 수정하기
+    @DisplayName("책 수정하기 테스트")
+    @Test
+    public void updateBookTest(){
+        // given
+        Long id = 1L;
+        BookSaveReqDto dto = new BookSaveReqDto();
+        dto.setTitle("junit강의");
+        dto.setAuthor("김지인");
+        // stub
+        Book book = new Book(1L, "spring강의", "김지인");
+        Optional<Book> bookOp = Optional.of(book);
+        when(bookRepository.findById(id)).thenReturn(bookOp);
+
+        // when
+        BookResDto bookResDto = bookService.updateBook(id, dto);
+
+        // then
+
+        assertThat(bookResDto.getTitle()).isEqualTo(dto.getTitle());
     }
 }
