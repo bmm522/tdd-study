@@ -1,4 +1,4 @@
-package com.tdd.study.web.dto;
+package com.tdd.study.web.dto.response;
 
 import com.tdd.study.domain.Book;
 import lombok.Builder;

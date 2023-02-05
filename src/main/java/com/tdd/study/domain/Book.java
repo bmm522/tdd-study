@@ -1,7 +1,7 @@
 package com.tdd.study.domain;
 
 
-import com.tdd.study.web.dto.BookResDto;
+import com.tdd.study.web.dto.response.BookResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
