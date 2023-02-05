@@ -2,6 +2,7 @@ package com.tdd.study.service;
 
 import com.tdd.study.domain.Book;
 import com.tdd.study.domain.BookRepository;
+import com.tdd.study.util.MailSender;
 import com.tdd.study.web.dto.BookResDto;
 import com.tdd.study.web.dto.BookSaveReqDto;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,17 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MailSender mailSender;
 
     // 1. 책 등록
     @Transactional(rollbackFor = RuntimeException.class)
     public BookResDto insertBook(BookSaveReqDto dto){
         Book bookPs = bookRepository.save(dto.toEntity());
+        if(bookPs != null){
+            if(!mailSender.send()){
+                throw new RuntimeException("메일이 전송되지 않았습니다.");
+            }
+        }
         return new BookResDto().toDto(bookPs);
     }
 
