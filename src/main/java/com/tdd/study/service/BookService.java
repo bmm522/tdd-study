@@ -3,6 +3,7 @@ package com.tdd.study.service;
 import com.tdd.study.domain.Book;
 import com.tdd.study.domain.BookRepository;
 import com.tdd.study.util.MailSender;
+import com.tdd.study.web.dto.response.BookListRespDto;
 import com.tdd.study.web.dto.response.BookResDto;
 import com.tdd.study.web.dto.request.BookSaveReqDto;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,14 @@ public class BookService {
     }
 
     // 2. 책 목록보기
-    public List<BookResDto> selectBooks(){
-        return bookRepository.findAll().stream()
-              //  .map(book -> new BookResDto().toDto(book))
+    public BookListRespDto selectBooks(){
+        List<BookResDto> dtos = bookRepository.findAll().stream()
+                //  .map(book -> new BookResDto().toDto(book))
                 .map(Book::toDto)
                 .collect(Collectors.toList());
+
+        BookListRespDto bookListRespDto = BookListRespDto.builder().bookResDtoList(dtos).build();
+        return bookListRespDto;
     }
 
     // 3. 책 한건보기

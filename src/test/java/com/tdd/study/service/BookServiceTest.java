@@ -3,6 +3,7 @@ package com.tdd.study.service;
 import com.tdd.study.domain.Book;
 import com.tdd.study.domain.BookRepository;
 import com.tdd.study.util.MailSender;
+import com.tdd.study.web.dto.response.BookListRespDto;
 import com.tdd.study.web.dto.response.BookResDto;
 import com.tdd.study.web.dto.request.BookSaveReqDto;
 import org.junit.jupiter.api.DisplayName;
@@ -70,14 +71,14 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         // when (실행)
-        List<BookResDto> dtos = bookService.selectBooks();
+        BookListRespDto dtos = bookService.selectBooks();
 
 
         // then
-        assertThat(dtos.get(0).getTitle()).isEqualTo("junit강의");
-        assertThat(dtos.get(0).getAuthor()).isEqualTo("김지인");
-        assertThat(dtos.get(1).getTitle()).isEqualTo("spring강의");
-        assertThat(dtos.get(1).getAuthor()).isEqualTo("김지인");
+        assertThat(dtos.getItems().get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(dtos.getItems().get(0).getAuthor()).isEqualTo("김지인");
+        assertThat(dtos.getItems().get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(dtos.getItems().get(1).getAuthor()).isEqualTo("김지인");
     }
 
     // 3. 책 한건보기 테스트
