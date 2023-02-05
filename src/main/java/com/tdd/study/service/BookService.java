@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,4 +31,34 @@ public class BookService {
                 .map(new BookResDto()::toDto)
                 .collect(Collectors.toList());
     }
+
+    // 3. 책 한건보기
+    public BookResDto selectBook(Long id){
+        Optional<Book> bookOp = bookRepository.findById(id);
+
+        if(bookOp.isPresent()){
+            return new BookResDto().toDto(bookOp.get());
+        } else {
+            throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+        }
+    }
+
+    // 4. 책 삭제하기
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
+
+    // 5. 책 수정하기
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void updateBook(Long id, BookSaveReqDto dto){
+        Optional<Book> bookOp = bookRepository.findById(id);
+        if(bookOp.isPresent()){
+            Book bookPS = bookOp.get();
+            bookPS.update(dto.getTitle(), dto.getAuthor());
+        } else {
+            throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+        }
+    }
 }
+
